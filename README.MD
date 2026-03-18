@@ -187,13 +187,6 @@ No registration files needed. No imports to add. Just follows the pattern.
 
 ---
 
-### First Time Running?
-- The project auto-creates necessary folders in `Storage/`
-- Debug mode is enabled by default → you'll see what's happening
-- Check `config.py` to customize behavior
-
----
-
 ## 🚀 Example: AI Automation System
 
 ### Problem
@@ -262,94 +255,54 @@ This reflects a foundational understanding of automation system design without r
 
 ```
 Project_Purrfect_2.0/
-│── Tools_Modules/
-│   ├── calendar.py        # Calendar-related actions
-│   ├── sheet.py           # Google Sheets operations
-│   ├── reminder.py        # Notifications & reminders
-│   ├── __init__.py
-│── Utils_Modules/
-│── config.py              # Configuration and paths
-│── main.py                # Core execution logic
-│── README.md
+├── main.py                          # Entry point with CLI args (--ter, --tele)
+├── config.py                        # Configuration (API keys, settings)
+├── config.example.py                # Configuration template (safe to share)
+├── requirements.txt                 # Python dependencies
+├── CORE_Modules/
+│   ├── core.py                      # Central orchestration engine
+│   └── core2.py
+├── Input_Modules/
+│   ├── switch.py                    # Platform abstraction (Terminal/Telegram)
+│   ├── terminal.py                  # Terminal input handler
+│   ├── telegram.py                  # Telegram bot handler
+│   └── voice_to_text.py             # Voice input conversion
+├── AI_Modules/
+│   ├── chat.py                      # OpenAI API integration
+│   ├── prompt.py                    # Prompt template management
+│   └── ML_models/                   # Optional ML classification
+│       ├── data_handler.py
+│       ├── classifier.py
+│       └── user_interaction.py
+├── Memory_Modules/
+│   └── memory.py                    # Conversation context management
+├── Utils_Modules/
+│   └── toolslist.py                 # Tool discovery & listing
+├── Tools_Modules/                   # Expandable tool system
+│   └── __init__.py
+├── Storage/                         # Auto-created (models, tools, logs)
+│   ├── Models/
+│   ├── Tools/
+│   └── Logs/
+├── Isolated_test.py                 # ML module testing (standalone)
+├── README.md                        # This file
+├── USAGE.md                         # Complete usage guide
+├── ML_MODULE.md                     # ML documentation
+├── TIMELINE.md                      # Project history (2023-2026)
+├── ROADMAP.md                       # Phase 1+ improvements
+├── PORTFOLIO_STATUS.md              # Quick reference for reviewers
+└── PORTFOLIO_PREP_SUMMARY.md        # Portfolio presentation guide
 ```
 
----
+### Folder Purpose
 
-## ⚙️ Tool System Architecture
-
-### 1. Modular Tool Design
-
-Each tool exists as a standalone file inside `Tools_Modules/`.
-
-Example:
-
-* `calendar.py` → handles all calendar operations
-* `sheet.py` → handles spreadsheet interactions
-
----
-
-### 2. Tool Metadata & Action Mapping
-
-Each module defines its capabilities via metadata:
-
-```python
-NAME = "Calendar"
-ACTIONS = {
-    "create_event": "Create a new calendar event",
-    "delete_event": "Delete an existing event",
-    "update_event": "Modify an existing event"
-}
-```
-
-This allows the system to:
-
-* Discover available actions
-* Map intent → executable function
-
----
-
-### 3. Dynamic Tool Loading
-
-Tools are automatically discovered and registered at runtime.
-
-Benefits:
-
-* No manual imports
-* Plug-and-play extensibility
-* Scalable architecture
-
----
-
-### 4. Execution Layer
-
-Each tool encapsulates its own logic:
-
-```python
-class MyTool:
-    def do_something(self, params):
-        return f"Doing something with {params}"
-    
-    def do_another_thing(self, params):
-        return f"Doing another thing with {params}"
-```
-
-This design keeps:
-
-* Logic isolated
-* Interfaces consistent
-* System maintainable
-
----
-
-### 5. Configuration Management
-
-Centralized configuration via `config.py`:
-
-```python
-TOOLS_STORAGE_PATH = "Storage/Tools/"
-CALENDAR_STORAGE_PATH = TOOLS_STORAGE_PATH + "Calendar/"
-SHEET_STORAGE_PATH = TOOLS_STORAGE_PATH + "Sheet/"
-```
+- **CORE_Modules**: Orchestration engine (intent processing, tool execution)
+- **Input_Modules**: Platform abstraction (Terminal, Telegram, Voice)
+- **AI_Modules**: LLM integration (OpenAI API, optional ML classification)
+- **Memory_Modules**: Conversation state and context management
+- **Utils_Modules**: Tool discovery and metadata
+- **Tools_Modules**: Expandable plug-and-play tool implementations
+- **Storage**: Runtime data (models, tool data, logs)
 
 ---
 
