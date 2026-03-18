@@ -61,7 +61,7 @@ This architecture enables scalable automation across multiple domains (e.g., cal
 
 **1. Clone the repository:**
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/gnznovus/project-purrfect.git
 cd Project_Purrfect_2.0
 ```
 
