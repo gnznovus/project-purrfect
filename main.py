@@ -1,3 +1,27 @@
+"""
+Project Purrfect 2.0 - AI Automation Framework
+Main Entry Point
+
+This module initializes and runs the Purrfect automation system.
+It handles:
+- Loading tools and core components
+- Selecting input platform (Terminal or Telegram)
+- Processing user input through the core engine
+- Managing the main execution loop
+
+Configuration:
+- Set INPUT_PLATFORM in config.py to switch between "terminal" and "telegram"
+- Customize debug modes and ML settings in config.py
+
+Usage:
+    python main.py              # Run in default mode (from config.py)
+    
+For Telegram bot mode:
+    1. Update config.INPUT_PLATFORM = "telegram"
+    2. Set TELEGRAM_BOT_TOKEN in config.py
+    3. python main.py
+"""
+
 from Input_Modules.switch import Switch
 from CORE_Modules.core import Core
 from Input_Modules.telegram import TelegramBot

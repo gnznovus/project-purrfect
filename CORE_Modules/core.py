@@ -1,12 +1,30 @@
 import config
 import json
 import openai
+from typing import Dict, Any, Tuple, Optional
 from AI_Modules.chat import ChatModule
 from AI_Modules.prompt import PromptManager
 from Memory_Modules.memory import MemoryBuffer
 from Utils_Modules import toolslist
 
 class Core:
+    """
+    Core execution engine for the Purrfect AI Automation System.
+    
+    Handles:
+    - Tool discovery and dynamic loading
+    - Intent processing via AI
+    - Tool execution and result handling
+    - Memory management for conversation history
+    
+    Attributes:
+        switch: Input handler for different platforms (terminal, telegram)
+        chat_module: AI chat interface (OpenAI)
+        memory: Conversation history buffer
+        tools: Loaded tool definitions and metadata
+        tool_instances: Cached instances of initialized tools
+    """
+    
     def __init__(self, switch):
         """Initialize CORE with Switch, Memory, and Tool Modules."""
         self.switch = switch
@@ -33,8 +51,12 @@ class Core:
 
             print("=================================\n")
 
-    def load_tools(self):
-        """Dynamically loads and flattens tools for easy lookup."""
+    def load_tools(self) -> Dict[str, Any]:
+        """Dynamically loads and flattens tools for easy lookup.
+        
+        Returns:
+            Dict[str, Any]: Dictionary mapping tool names to their configurations
+        """
         raw_tools = toolslist.get_tools_list()
         tools = {}
 
@@ -47,8 +69,15 @@ class Core:
 
         return tools
 
-    def get_tool_instance(self, tool_name):
-        """Retrieve or create a tool instance for execution."""
+    def get_tool_instance(self, tool_name: str) -> Tuple[Optional[Any], Optional[str]]:
+        """Retrieve or create a tool instance for execution.
+        
+        Args:
+            tool_name: Name of the tool to instantiate
+            
+        Returns:
+            Tuple of (tool_instance, error_message). If successful, error is None.
+        """
         if tool_name not in self.tools:
             return None, f"[Error] Tool '{tool_name}' not found."
 
@@ -60,8 +89,17 @@ class Core:
 
         return self.tool_instances[tool_name], None
 
-    def call_tool(self, tool_name, tool_action, tool_params):
-        """Calls a tool dynamically and ensures all required parameters are provided."""
+    def call_tool(self, tool_name: str, tool_action: str, tool_params: Dict[str, Any]) -> str:
+        """Calls a tool dynamically and ensures all required parameters are provided.
+        
+        Args:
+            tool_name: Name of the tool to execute
+            tool_action: Action/method within the tool to call
+            tool_params: Dictionary of parameters for the action
+            
+        Returns:
+            str: Result or error message from tool execution
+        """
         tool_instance, error = self.get_tool_instance(tool_name)
         if error:
             return error

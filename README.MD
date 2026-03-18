@@ -1,5 +1,8 @@
 # Tools System — AI Automation Framework (Project Purrfect 2.0)
 
+**Status:** Personal project (Late 2022 - End 2023) | Documented for portfolio (2026)
+**Maturity:** Phase 0 prototype | Well-refined, not actively developed
+
 ## 📌 Overview
 
 The **Tools System** is a modular AI-driven automation framework designed to execute tasks dynamically based on user intent.
@@ -11,6 +14,182 @@ Each tool is implemented as a **self-contained module**, allowing the system to:
 * Execute workflows automatically
 
 This architecture enables scalable automation across multiple domains (e.g., calendar, spreadsheets, reminders) without hardcoded integrations.
+
+---
+
+## 📊 Project Status: Phase 0 Prototype (Late 2022 - End 2023) ⚠️
+
+**Timeline:**
+- **Christmas 2022:** v1.0 built as pure learning exploration (no production focus)
+- **Mid 2023 - End 2023:** Remade as v2.0 with refined learning goals, added Plug-and-Play system, strict modularization, Hive Mind coordination style
+- 2026: Documented for portfolio + lessons learned
+
+**Current Maturity:** Phase 0 (intentionally stopped here)
+- Not actively developed
+- Well-tested and refined over 2 years
+- Code is solid, architecture is sound
+- Known limitations accepted and documented
+
+| Component | Status | Notes |
+|-----------|--------|-------|
+| **Core Architecture** | ✅ Complete | Modular tool system, working intent routing |
+| **Terminal Interface** | ✅ Working | Tested, functional CLI chat |
+| **Telegram Bot** | ✅ Working | Tested, both DM and group modes |
+| **Intent Detection** | ⚠️ ~65% accurate | Works but not production-grade (Phase 1 target: 85%) |
+| **Tool Execution** | ⚠️ Framework only | Architecture proven, tools are placeholders |
+| **Multi-Tool Coordination** | ⚠️ Basic | Complex workflows need refinement |
+| **Response Stability** | ⚠️ GPT-3.5 quirks | Model inconsistency from 2023 era (Phase 1: upgrade) |
+| **ML Classification** | ✅ Functional | Works but disabled in main (Phase 1: optimize) |
+
+### What This Means
+
+✅ **You CAN run it** — It works end-to-end with proper credentials
+⚠️ **You should NOT expect perfection** — Intent detection is ~65%, responses sometimes inconsistent
+🔧 **Tools are placeholders** — Architecture supports real integrations, but Google Calendar etc. aren't implemented yet
+📋 **Phase 1 is planned** — Clear roadmap for improvements (see ROADMAP.md)
+
+---
+
+## 🚀 Quick Start (Getting Started in 5 Minutes)
+
+### Prerequisites
+- Python 3.8+
+- pip (Python package manager)
+- API Keys: OpenAI, Google APIs, Telegram Bot Token (optional)
+
+### Installation
+
+**1. Clone the repository:**
+```bash
+git clone <your-repo-url>
+cd Project_Purrfect_2.0
+```
+
+**2. Create a Python virtual environment (recommended):**
+```bash
+python -m venv venv
+
+# On Windows:
+venv\Scripts\activate
+
+# On macOS/Linux:
+source venv/bin/activate
+```
+
+**3. Install dependencies:**
+```bash
+pip install -r requirements.txt
+```
+
+**4. Configure API Keys:**
+```bash
+# Copy the example config
+cp config.example.py config.py
+
+# Edit config.py with your actual API keys
+#   - OpenAI API key from https://platform.openai.com/
+#   - Google credentials from https://console.cloud.google.com/
+#   - Telegram bot token from https://t.me/BotFather
+```
+
+**5. Run the project:**
+```bash
+# Terminal mode (default)
+python main.py
+
+# Telegram bot mode (update config.INPUT_PLATFORM = "telegram" first)
+python main.py
+```
+
+### First Time Running?
+- The project auto-creates necessary folders in `Storage/`
+- Debug mode is enabled by default → you'll see what's happening
+- Check `config.py` to customize behavior
+
+---
+
+## 🧠 Optional: Machine Learning Intent Classification
+
+The project includes a fully functional **spaCy-based ML classifier** for automatic intent detection (task vs. chat). Currently disabled in main system but available for experimentation.
+
+### Enable ML Mode
+
+**1. In `config.py`, change:**
+```python
+ML_AUTO_TRAIN = True        # Enable ML training on startup
+ML_AUTO_RETRAIN = True      # Enable incremental learning
+ML_CLARIFICATION_MODE = True # Ask user to clarify low-confidence predictions
+ML_CONFIDENCE_THRESHOLD = 0.70  # Confidence threshold for clarification
+```
+
+**2. Test the ML module in isolation:**
+```bash
+# Run the ML testing script
+python Isolated_test.py
+
+# The system will:
+# 1. Load training data from Training_Data.txt
+# 2. Train the spaCy model
+# 3. Enter interactive testing mode for you to test classification
+```
+
+**3. Example ML Training Format (`Storage/Models/Training_Data.txt`):**
+```
+create a calendar event	task
+what is the weather	chat
+remind me in 30 minutes	task
+tell me a joke	chat
+```
+
+### What the ML Module Does
+- Classifies user input as either `task` (needs tool execution) or `chat` (conversational)
+- Supports incremental learning via `Retrain_Data.txt`
+- Uses user feedback to improve accuracy
+- Built with spaCy's text classification pipeline
+
+**Note:** ML is optional. The system works perfectly fine with just OpenAI's intent understanding!
+
+---
+
+## 🛠️ Expandable Tool System
+
+The `Tools_Modules/` directory is designed as a plug-and-play architecture. Tools are auto-discovered at runtime.
+
+### Structure of a Tool Module
+
+```python
+# Tools_Modules/my_action.py
+class MyAction:
+    """Tool for doing something specific."""
+    
+    # Metadata for discovery
+    NAME = "My Action"
+    ACTIONS = {
+        "do_something": "Do something with params",
+        "do_another": "Do another thing"
+    }
+    
+    # Implementation
+    def do_something(self, param1: str, param2: int) -> str:
+        """Execute the action."""
+        return f"Done with {param1} and {param2}"
+```
+
+### Adding a New Tool
+
+1. Create `Tools_Modules/my_tool.py`
+2. Define your tool class with `NAME` and `ACTIONS` metadata
+3. Implement action methods
+4. System auto-discovers it on next restart! 🚀
+
+No registration files needed. No imports to add. Just follows the pattern.
+
+---
+
+### First Time Running?
+- The project auto-creates necessary folders in `Storage/`
+- Debug mode is enabled by default → you'll see what's happening
+- Check `config.py` to customize behavior
 
 ---
 
@@ -45,6 +224,20 @@ User Input
 ### Tech
 
 Python, modular architecture, dynamic module loading, API-style design
+
+---
+
+## 🗺️ What's Next?
+
+**This is Phase 0. See [ROADMAP.md](ROADMAP.md) for Phase 1+ improvements:**
+
+- Token optimization (reduce API costs)
+- Intent accuracy boost (65% → 85%)
+- Response stability improvements
+- Real tool implementations (Google Calendar, Sheets, etc.)
+- Multi-tool coordination
+
+Phase 1 is planned but not urgent—architecture is solid, just needs refinement.
 
 ---
 

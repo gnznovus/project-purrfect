@@ -3,6 +3,20 @@ import config
 import os
 
 class Switch:
+    """
+    Input switch/router for selecting input platform and handling different input types.
+    
+    Supports multiple input platforms:
+    - Terminal: CLI-based chat interface
+    - Telegram: Bot-based messaging via Telegram API
+    
+    Also detects and routes different input types (text, voice).
+    
+    Attributes:
+        platform: Currently active platform ("terminal" or "telegram")
+        telegram_bot: Instance of Telegram bot (initialized if platform == "telegram")
+    """
+    
     def __init__(self):
         self.platform = config.INPUT_PLATFORM
         self.telegram_bot = None

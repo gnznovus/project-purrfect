@@ -1,10 +1,46 @@
+"""
+ML Training Module - spaCy-based Intent Classification
+
+This module provides a complete pipeline for training and testing
+a text classification model that distinguishes between:
+- "task": User requests for tool/action execution
+- "chat": Conversational exchanges
+
+Features:
+- Auto-training from Training_Data.txt on startup
+- Incremental learning from user feedback (Retrain_Data.txt)
+- Adaptive confidence thresholds
+- Interactive testing mode with user clarification
+
+Usage:
+    python Isolated_test.py
+"""
+
 import spacy
 import random
 import os
+from typing import List, Tuple, Dict, Optional
 import config  # Import your configuration settings
 
 class MLTrainer:
-    def __init__(self):
+    """
+    Machine Learning Trainer for Intent Classification.
+    
+    Manages the full ML pipeline:
+    - Model loading/creation
+    - Training data management
+    - Model training with adaptive learning
+    - Classification and confidence scoring
+    - User feedback collection for continuous improvement
+    
+    Attributes:
+        MODEL_PATH: Path to saved spaCy model
+        TRAINING_DATA_PATH: Path to initial training data
+        RETRAIN_DATA_PATH: Path to incremental training data
+        BATCH_SIZE: Size of batches for incremental training
+        nlp: The spaCy language model
+    """
+    def __init__(self) -> None:
         """Initialize the ML Trainer"""
         self.MODEL_PATH = config.MODEL_PATH
         self.TRAINING_DATA_PATH = config.TRAINING_DATA_PATH
@@ -26,8 +62,12 @@ class MLTrainer:
                 print("🔄 Bulk retraining completed from Retrain_Data.txt!")
 
     # 🔹 Load or Create Model
-    def load_or_create_model(self):
-        """Load existing model or create a new one."""
+    def load_or_create_model(self) -> spacy.language.Language:
+        """Load existing model or create a new one.
+        
+        Returns:
+            spacy.language.Language: The loaded or newly created spaCy model
+        """
         if os.path.exists(self.MODEL_PATH) and os.path.exists(os.path.join(self.MODEL_PATH, "meta.json")):
             print(f"🔄 Loading existing model from {self.MODEL_PATH}...")
             return spacy.load(self.MODEL_PATH)
@@ -41,8 +81,15 @@ class MLTrainer:
             return nlp
 
     # 🔹 Load Data from Files
-    def load_training_data(self, file_path):
-        """Load training data, ensuring the file exists to prevent errors."""
+    def load_training_data(self, file_path: str) -> List[Tuple[str, Dict]]:
+        """Load training data, ensuring the file exists to prevent errors.
+        
+        Args:
+            file_path: Path to training data file
+            
+        Returns:
+            List of tuples (text, annotations) for training
+        """
         if not os.path.exists(file_path):
             open(file_path, "w").close()  # Create empty file if missing
             return []
@@ -67,16 +114,28 @@ class MLTrainer:
         return training_data
 
     # 🔹 Save Training Data
-    def save_training_data(self, file_path, data):
-        """Save training data while ensuring file is closed properly."""
+    def save_training_data(self, file_path: str, data: List[Tuple[str, Dict]]) -> None:
+        """Save training data while ensuring file is closed properly.
+        
+        Args:
+            file_path: Path to save training data to
+            data: Training data to save
+        """
         with open(file_path, "w", encoding="utf-8") as file:
             for text, annotations in data:
                 label = "task" if annotations["cats"]["task"] == 1.0 else "chat"
                 file.write(f"{text}\t{label}\n")
 
     # 🔹 Smart Sample Selection
-    def get_sample_distribution(self, data):
-        """Determine how many samples to take per type based on total available data."""
+    def get_sample_distribution(self, data: List[Tuple[str, Dict]]) -> Dict[str, int]:
+        """Determine how many samples to take per type based on total available data.
+        
+        Args:
+            data: Training data to analyze
+            
+        Returns:
+            Dict mapping label types to sample counts
+        """
         type_counts = {"task": 0, "chat": 0}
 
         # Count samples per type
@@ -96,8 +155,16 @@ class MLTrainer:
         return {t: min(count, per_type_sample) for t, count in type_counts.items()}
 
     # 🔹 Filter Low-Sample Types
-    def filter_low_sample_types(self, data, distribution):
-        """Skip underrepresented types until more samples exist and redistribute skipped quota."""
+    def filter_low_sample_types(self, data: List[Tuple[str, Dict]], distribution: Dict[str, int]) -> List[Tuple[str, Dict]]:
+        """Skip underrepresented types until more samples exist and redistribute skipped quota.
+        
+        Args:
+            data: Training data to filter
+            distribution: Sample distribution per type
+            
+        Returns:
+            Filtered training data
+        """
         min_threshold = max(sum(distribution.values()) // len(distribution), 1)
 
         # Identify low-sample types
@@ -113,8 +180,16 @@ class MLTrainer:
         return adjusted_data
 
     # 🔹 Train Model with Smart Sampling
-    def train_model(self, data, full_train=False):
-        """Train model with Smart Sample Selection & Adaptive Learning."""
+    def train_model(self, data: List[Tuple[str, Dict]], full_train: bool = False) -> bool:
+        """Train model with Smart Sample Selection & Adaptive Learning.
+        
+        Args:
+            data: Training data
+            full_train: Whether to do full training (more iterations) vs incremental
+            
+        Returns:
+            bool: True if training completed successfully
+        """
         if not full_train and len(data) < self.BATCH_SIZE:
             return False  # Skip retraining if not enough samples
 
@@ -148,8 +223,15 @@ class MLTrainer:
         return True
 
     # 🔹 Classify Input
-    def classify_input(self, text):
-        """Classify user input as 'task' or 'chat'."""
+    def classify_input(self, text: str) -> Tuple[str, float]:
+        """Classify user input as 'task' or 'chat'.
+        
+        Args:
+            text: User input to classify
+            
+        Returns:
+            Tuple of (predicted_label, confidence_score)
+        """
         doc = self.nlp(text)
         scores = doc.cats
         label = max(scores, key=scores.get)  # Pick highest confidence label
@@ -157,8 +239,13 @@ class MLTrainer:
         return label, confidence
 
     # 🔹 Handle Uncertain Classifications
-    def handle_uncertain_classification(self, text, confidence):
-        """Handles low-confidence predictions by asking for user input."""
+    def handle_uncertain_classification(self, text: str, confidence: float) -> None:
+        """Handles low-confidence predictions by asking for user input.
+        
+        Args:
+            text: The text that was classified with low confidence
+            confidence: The confidence score of the classification
+        """
         print("\n🤔 AI is unsure. Help me classify this:")
         print("1️⃣ Task")
         print("2️⃣ Chat")
@@ -177,8 +264,12 @@ class MLTrainer:
         self.train_model(self.retrain_data, full_train=False)  # Trigger batch training if enough data
 
     # 🔹 Run User Testing Mode
-    def start_testing(self):
-        """Interactive testing mode for classification."""
+    def start_testing(self) -> None:
+        """Interactive testing mode for classification.
+        
+        Allows users to test classification accuracy and provide feedback
+        for model improvement.
+        """
         while True:
             user_input = input("\n📝 Enter a test phrase (or type 'exit' to quit): ").strip()
             if user_input.lower() == "exit":
