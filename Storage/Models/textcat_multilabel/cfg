@@ -1,0 +1,15 @@
+{
+  "labels":[
+    "google_calendar",
+    "google_sheet",
+    "chat",
+    "create_event",
+    "delete_event",
+    "update_event",
+    "get_events",
+    "read_data",
+    "write_data",
+    "update_cell"
+  ],
+  "threshold":0.5
+}

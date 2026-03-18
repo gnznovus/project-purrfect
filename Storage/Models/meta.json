@@ -1,0 +1,42 @@
+{
+  "lang":"en",
+  "name":"pipeline",
+  "version":"0.0.0",
+  "spacy_version":">=3.8.3,<3.9.0",
+  "description":"",
+  "author":"",
+  "email":"",
+  "url":"",
+  "license":"",
+  "spacy_git_version":"be0fa81",
+  "vectors":{
+    "width":0,
+    "vectors":0,
+    "keys":0,
+    "name":null,
+    "mode":"default"
+  },
+  "labels":{
+    "textcat_multilabel":[
+      "google_calendar",
+      "google_sheet",
+      "chat",
+      "create_event",
+      "delete_event",
+      "update_event",
+      "get_events",
+      "read_data",
+      "write_data",
+      "update_cell"
+    ]
+  },
+  "pipeline":[
+    "textcat_multilabel"
+  ],
+  "components":[
+    "textcat_multilabel"
+  ],
+  "disabled":[
+
+  ]
+}

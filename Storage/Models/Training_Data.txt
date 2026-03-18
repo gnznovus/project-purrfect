@@ -1,0 +1,35 @@
+# 🔹 Google Calendar Tasks
+Schedule a project review meeting for next Monday at 10 AM | google_calendar, create_event
+Cancel my lunch appointment for tomorrow | google_calendar, delete_event
+Update the time of my team sync meeting to 4 PM | google_calendar, update_event
+List all my scheduled meetings for this week | google_calendar, get_events
+Create a new task to follow up with the supplier | google_calendar, create_event
+Delete my old reminders for past events | google_calendar, delete_event
+Change the location of my upcoming client call | google_calendar, update_event
+Get all meetings scheduled for Friday | google_calendar, get_events
+Add my gym session to the calendar for Wednesday evening | google_calendar, create_event
+Schedule a one-on-one with my manager for next Thursday | google_calendar, create_event
+Remove last week’s outdated calendar entries | google_calendar, delete_event
+Adjust the description for my upcoming conference call | google_calendar, update_event
+Find all upcoming deadlines from my schedule | google_calendar, get_events
+
+# 🔹 Google Sheets Tasks
+Write down sales projections for next quarter | google_sheet, write_data
+Read the total expenses from last month | google_sheet, read_data
+Update the budget cell in my finance sheet | google_sheet, update_cell
+Write the minutes of today’s meeting in a spreadsheet | google_sheet, write_data
+Retrieve my expense report from the finance sheet | google_sheet, read_data
+Modify the due date of my report submission in the tracker | google_sheet, update_cell
+Update my spreadsheet with the latest inventory count | google_sheet, update_cell
+
+# 🔹 Chat-Based Entries
+Hey, how’s your day going? | chat
+What do you think about AI replacing jobs? | chat
+Tell me a joke! | chat
+What’s your favorite programming language? | chat
+Can you explain how black holes work? | chat
+Who won the World Cup in 2022? | chat
+What’s the weather like today? | chat
+Do you believe in aliens? | chat
+Give me a fun fact about space! | chat
+How do I cook a perfect steak? | chat
