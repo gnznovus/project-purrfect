@@ -17,7 +17,7 @@
 
 | Aspect | Status | Notes |
 |--------|--------|-------|
-| **Does it run?** | ✅ YES | Clone, configure credentials, `python main.py` |
+| **Does it run?** | ✅ YES | Clone, configure credentials, `python main.py` (or use `--ter`/`--tele` args) |
 | **How old is it?** | Late 2022 - End 2023 | Built over ~1 year, refined and documented 2026 |
 | **Is it finished?** | ⚠️ NO | Intentionally archived at Phase 0 |
 | **Is it maintained?** | ❌ NO | Not actively developed, but well-tested |
@@ -136,7 +136,10 @@ cp config.example.py config.py
 # Edit config.py with your OpenAI key
 
 # Run
-python main.py
+python main.py                # Uses config.py setting
+# Or force specific platform:
+python main.py --ter          # Terminal mode
+python main.py --tele         # Telegram mode
 ```
 
 Expected result:

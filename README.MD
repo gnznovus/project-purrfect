@@ -61,7 +61,7 @@ This architecture enables scalable automation across multiple domains (e.g., cal
 
 **1. Clone the repository:**
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/gnznovus/project-purrfect.git
 cd Project_Purrfect_2.0
 ```
 
@@ -94,11 +94,12 @@ cp config.example.py config.py
 
 **5. Run the project:**
 ```bash
-# Terminal mode (default)
+# Uses config.py setting (default)
 python main.py
 
-# Telegram bot mode (update config.INPUT_PLATFORM = "telegram" first)
-python main.py
+# Or force specific platform:
+python main.py --ter          # Terminal mode
+python main.py --tele         # Telegram bot mode
 ```
 
 ### First Time Running?

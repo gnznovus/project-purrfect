@@ -8,7 +8,9 @@ This guide shows you how to use the Purrfect AI Automation System with real exam
 
 Start the system in terminal mode:
 ```bash
-python main.py
+python main.py --ter    # Force Terminal mode
+# OR
+python main.py          # If config.INPUT_PLATFORM = "terminal"
 ```
 
 You'll see:

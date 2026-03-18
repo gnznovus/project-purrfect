@@ -249,7 +249,10 @@ pip install -r requirements.txt
 cp config.example.py config.py
 
 # Try running
-python main.py
+python main.py                # Uses config.py setting (default)
+# Or force specific platform:
+python main.py --ter          # Force Terminal mode
+python main.py --tele         # Force Telegram mode
 ```
 
 ### 2. Verify Git is Clean
